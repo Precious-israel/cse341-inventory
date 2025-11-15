@@ -1,31 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const {
-  getAllTransactions,
-  getTransactionById,
-  createTransaction,
-  updateTransaction,
-  deleteTransaction,
-  getTransactionsByProduct
-} = require('../controllers/transactions');
-const { validateTransaction, validateId } = require('../middleware/validate');
+const transactionController = require('../controllers/transactions');
+const validateMiddleware = require('../middleware/validate'); // optional validation middleware
 
+// GET all transactions
+router.get('/', transactionController.getAllTransactions);
 
-router.get('/', getAllTransactions);
+// GET a single transaction by ID
+router.get('/:id', transactionController.getTransactionById);
 
-
-router.get('/product/:productId', validateId, getTransactionsByProduct);
-
-
-router.get('/:id', validateId, getTransactionById);
-
-
-router.post('/', validateTransaction, createTransaction);
-
-
-router.put('/:id', validateId, validateTransaction, updateTransaction);
-
-
-router.delete('/:id', validateId, deleteTransaction);
+// CREATE a new transaction
+router.post('/', validateMiddleware, transactionController.createTransaction);
 
 module.exports = router;

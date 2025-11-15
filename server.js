@@ -1,11 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongodb = require('./config/database');
+const mongodb = require('./config/database'); // your MongoDB client setup
+const routes = require('./routes');
 
 const app = express();
 const port = process.env.PORT || 3001;
 
+// Middleware
 app.use(bodyParser.json());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -13,68 +15,45 @@ app.use((req, res, next) => {
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, z-key'
   );
-  res.setHeader('Access-Control-Allow-Mthods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, DELETE, OPTIONS'
+  );
   next();
 });
-app.use('/', require('./routes'));
 
-mongodb.initDb((err) => {
+// Routes
+app.use('/', routes);
+
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found',
+  });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    success: false,
+    message: 'Something went wrong!',
+    error: process.env.NODE_ENV === 'production' ? {} : err.message,
+  });
+});
+
+// Initialize DB and start server
+mongodb.initDb((err, db) => {
   if (err) {
-    console.log(err);
-  }
-  else {
+    console.error('Database initialization failed', err);
+    process.exit(1); // stop the server if DB fails
+  } else {
     app.listen(port, () => {
-      console.log("Database is listening and node running.")
-    })
+      console.log(`Server is running on port ${port}`);
+      console.log('Database connected successfully');
+    });
   }
 });
 
 
-
-
-// const express = require('express');
-// const cors = require('cors');
-// require('dotenv').config();
-
-// const app = express();
-// const PORT = process.env.PORT || 3000;
-
-// // Middleware
-// app.use(cors());
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-
-// // Database connection
-// const { connectDB } = require('./config/database');
-// connectDB();
-
-// // Routes
-// app.use('/api', require('./routes'));
-
-// // Swagger Documentation
-// app.use('/api-docs', require('./routes/swagger'));
-
-// // Error handling middleware
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).json({ 
-//     success: false, 
-//     message: 'Something went wrong!',
-//     error: process.env.NODE_ENV === 'production' ? {} : err.message 
-//   });
-// });
-
-// // 404 handler
-// app.use('*', (req, res) => {
-//   res.status(404).json({
-//     success: false,
-//     message: 'Route not found'
-//   });
-// });
-
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}`);
-//   console.log(`API Documentation available at http://localhost:${PORT}/api-docs`);
-// });
-
-// module.exports = app;
