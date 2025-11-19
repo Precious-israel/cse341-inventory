@@ -1,12 +1,15 @@
 {
   "name": "cse341-inventory",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Inventory Management System API",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "swagger": "node swagger.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["inventory", "api", "mongodb"],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -17,5 +20,8 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "validatorjs": "^3.22.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
