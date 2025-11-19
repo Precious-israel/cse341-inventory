@@ -6,7 +6,8 @@ const doc = {
         description: 'This is an API for Inventory Management System'
     },
     host: 'localhost:3000', 
-    schemes: ['http']
+    schemes: ['http', 'https'],
+    basePath: '/' 
 };
 
 const outputFile = './swagger.json';

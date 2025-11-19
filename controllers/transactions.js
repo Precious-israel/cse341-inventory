@@ -6,6 +6,7 @@ const transactionController = {
 
   // GET all transactions
   async getAllTransactions(req, res) {
+    //#swagger.tags=['transactions']
     try {
       const transactions = await Transaction.findAll();
       res.status(200).json(transactions);
@@ -16,6 +17,7 @@ const transactionController = {
 
   // GET transaction by ID
   async getTransactionById(req, res) {
+    //#swagger.tags=['transactions']
     try {
       const { id } = req.params;
       const item = await Transaction.findById(id);
@@ -31,6 +33,7 @@ const transactionController = {
 
   // CREATE transaction
   async createTransaction(req, res) {
+    //#swagger.tags=['transactions']
     try {
       const data = req.body;
 
@@ -83,6 +86,7 @@ const transactionController = {
 
   // DELETE transaction (NEW)
   async deleteTransaction(req, res) {
+    //#swagger.tags=['transactions']
     try {
       const { id } = req.params;
 

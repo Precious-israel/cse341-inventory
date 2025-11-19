@@ -6,6 +6,7 @@ const productController = {
 
   // GET all products
   async getAllProducts(req, res) {
+    //#swagger.tags=['products']
     try {
       const products = await Product.findAll();
       res.status(200).json(products);
@@ -16,6 +17,7 @@ const productController = {
 
   // GET product by ID
   async getProductById(req, res) {
+    //#swagger.tags=['products']
     try {
       const { id } = req.params;
       const item = await Product.findById(id);
@@ -29,6 +31,7 @@ const productController = {
 
   // CREATE new product
   async createProduct(req, res) {
+    //#swagger.tags=['products']
     try {
       const productData = req.body;
       const now = new Date();
@@ -47,6 +50,7 @@ const productController = {
 
   // UPDATE product
   async updateProduct(req, res) {
+    //#swagger.tags=['products']
     try {
       const { id } = req.params;
       const updateData = { ...req.body, updatedAt: new Date() };
@@ -65,6 +69,7 @@ const productController = {
 
   // DELETE product
   async deleteProduct(req, res) {
+    //#swagger.tags=['products']
     try {
       const { id } = req.params;
 

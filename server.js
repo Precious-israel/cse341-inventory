@@ -4,8 +4,11 @@ const bodyParser = require('body-parser');
 const mongodb = require('./config/database'); 
 const routes = require('./routes');
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
@@ -26,11 +29,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/', routes);
 
-// // Swagger documentation route
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
-//   explorer: true,
-//   customCss: '.swagger-ui .topbar { display: none }'
-// }));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 /// 404 handler
 app.use((req, res) => {

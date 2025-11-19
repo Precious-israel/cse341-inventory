@@ -5,8 +5,13 @@ const productRoutes = require("./products");
 const transactionRoutes = require("./transactions");
 const swaggerRoutes = require("./swagger");
 
+router.get('/', (req, res) => {
+    //#swagger.tags=['Hello World']
+    res.send('Hello World');
+});
+
 router.use("/products", productRoutes);
 router.use("/transactions", transactionRoutes);
-router.use("/api-docs", swaggerRoutes);
+router.use("/", swaggerRoutes);
 
 module.exports = router;
