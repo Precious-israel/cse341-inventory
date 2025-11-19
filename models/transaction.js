@@ -1,7 +1,7 @@
 const { getDatabase } = require('../config/database');
 const { ObjectId } = require('mongodb');
 
-// Correct name:
+
 const transactionCollection = () => getDatabase().collection('transactions');
 
 module.exports = {

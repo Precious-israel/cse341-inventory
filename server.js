@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongodb = require('./config/database'); // your MongoDB client setup
+const mongodb = require('./config/database'); 
 const routes = require('./routes');
 
 const app = express();
@@ -22,36 +22,43 @@ app.use((req, res, next) => {
   next();
 });
 
+
 // Routes
 app.use('/', routes);
 
-// // 404 handler
-// app.use('*', (req, res) => {
-//   res.status(404).json({
-//     success: false,
-//     message: 'Route not found',
-//   });
-// });
+// // Swagger documentation route
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
+//   explorer: true,
+//   customCss: '.swagger-ui .topbar { display: none }'
+// }));
+
+/// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found',
+  });
+});
 
 // Error handling middleware
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).json({
-//     success: false,
-//     message: 'Something went wrong!',
-//     error: process.env.NODE_ENV === 'production' ? {} : err.message,
-//   });
-// });
-
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    success: false,
+    message: 'Something went wrong!',
+    error: process.env.NODE_ENV === 'production' ? {} : err.message,
+  });
+});
 process.on('uncaughtException', (err, origin) => {
-  console.log(process.stderr.fd, 'Catch Exception: ${err}\n' * `Exceptionn Origin: ${origin}`);
+  console.error('Caught exception:', err);
+  console.error('Exception origin:', origin);
 });
 
 // Initialize DB and start server
 mongodb.initDb((err, db) => {
   if (err) {
     console.error('Database initialization failed', err);
-    process.exit(1); // stop the server if DB fails
+    process.exit(1); 
   } else {
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);

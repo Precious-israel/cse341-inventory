@@ -3,7 +3,7 @@ GET http://localhost:3000/transactions
 
 
 ### Get single transaction
-GET http://localhost:3000/transactions/----
+GET http://localhost:3000/transactions/69170dc95fe878a912578bdf
 
 
 ### Create new transaction
@@ -11,12 +11,12 @@ POST  http://localhost:3000/transactions
 Cpntent-Content-Type: application/json
 
 ### Update transaction
-PUT  http://localhost:3000/transactions/---
+PUT  http://localhost:3000/transactions/69170dc95fe878a912578bdf
 Content-Type: application/json
 
 
 ### Delete transaction
-DELETE http://localhost:3000/transactions/----
+DELETE http://localhost:3000/transactions/69170f4b5fe878a912578be1
 
 ### Swagger Documentation
 GET http://localhost:3000/api-docs

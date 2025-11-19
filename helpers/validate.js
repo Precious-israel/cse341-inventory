@@ -36,19 +36,22 @@ module.exports = {
   },
 
   // Transaction validation using validatorjs
-  transactionValidation: (data, callback) => {
-    const rules = {
-      productId: "required",
-      type: "in:IN,OUT",
-      quantity: "numeric"
-    };
+transactionValidation: (data, callback) => {
+  const rules = {
+    productId: "required",
+    transactionType: "required|in:INBOUND,OUTBOUND", 
+    quantity: "required|numeric"
+  };
 
-    const customMessages = {
-      "productId.required": "Product ID required",
-      "type.in": "Type must be 'IN' or 'OUT'",
-      "quantity.numeric": "Quantity must be numeric"
-    };
+  const customMessages = {
+    "productId.required": "Product ID required",
+    "transactionType.required": "Transaction type is required",
+    "transactionType.in": "Type must be 'INBOUND' or 'OUTBOUND'",
+    "quantity.required": "Quantity is required",
+    "quantity.numeric": "Quantity must be numeric",
+    "quantity.min": "Quantity must be at least 1"
+  };
 
-    validator(data, rules, customMessages, callback);
-  }
+  validator(data, rules, customMessages, callback);
+}
 };

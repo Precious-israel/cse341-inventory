@@ -1,24 +1,15 @@
 const express = require('express');
 const router = express.Router();
-
 const transactionController = require('../controllers/transactions');
-const validateMiddleware = require('../middleware/validate');
-
-// // --- Safety checks ---
-// if (!transactionController || typeof transactionController !== 'object') {
-//   throw new Error('transactions controller not found or invalid');
-// }
-// if (!validateMiddleware || typeof validateMiddleware !== 'function') {
-//   throw new Error('validateMiddleware not found or invalid');
-// }
+const { validateTransaction, validateObjectId } = require('../middleware/validate');
 
 // GET all transactions
 router.get('/', transactionController.getAllTransactions);
 
-// GET a single transaction by ID
-router.get('/:id', transactionController.getTransactionById);
+// GET a single transaction by ID (with ObjectId validation)
+router.get('/:id', validateObjectId('id'), transactionController.getTransactionById);
 
 // CREATE a new transaction
-router.post('/', transactionController.createTransaction);
+router.post('/', validateTransaction, transactionController.createTransaction);
 
 module.exports = router;
