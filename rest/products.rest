@@ -1,0 +1,22 @@
+### Get all products
+GET http://localhost:3000/products
+
+
+### Get single product
+GET http://localhost:3000/products/691700385fe878a912578bda
+
+
+### Create new product
+POST  http://localhost:3000/products
+Cpntent-Content-Type: application/json
+
+### Update product
+PUT  http://localhost:3000/products/---
+Content-Type: application/json
+
+
+### Delete product
+DELETE http://localhost:3000/products/----
+
+### Swagger Documentation
+GET http://localhost:3000/api-docs

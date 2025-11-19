@@ -1,0 +1,22 @@
+### Get all ttransactions
+GET http://localhost:3000/transactions
+
+
+### Get single transaction
+GET http://localhost:3000/transactions/----
+
+
+### Create new transaction
+POST  http://localhost:3000/transactions
+Cpntent-Content-Type: application/json
+
+### Update transaction
+PUT  http://localhost:3000/transactions/---
+Content-Type: application/json
+
+
+### Delete transaction
+DELETE http://localhost:3000/transactions/----
+
+### Swagger Documentation
+GET http://localhost:3000/api-docs

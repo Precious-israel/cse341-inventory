@@ -25,22 +25,26 @@ app.use((req, res, next) => {
 // Routes
 app.use('/', routes);
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route not found',
-  });
-});
+// // 404 handler
+// app.use('*', (req, res) => {
+//   res.status(404).json({
+//     success: false,
+//     message: 'Route not found',
+//   });
+// });
 
 // Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    success: false,
-    message: 'Something went wrong!',
-    error: process.env.NODE_ENV === 'production' ? {} : err.message,
-  });
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).json({
+//     success: false,
+//     message: 'Something went wrong!',
+//     error: process.env.NODE_ENV === 'production' ? {} : err.message,
+//   });
+// });
+
+process.on('uncaughtException', (err, origin) => {
+  console.log(process.stderr.fd, 'Catch Exception: ${err}\n' * `Exceptionn Origin: ${origin}`);
 });
 
 // Initialize DB and start server
