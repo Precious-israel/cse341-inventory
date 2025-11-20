@@ -52,10 +52,9 @@ const transactionController = {
 
         if (newStock < 0)
           return res.status(400).json({ message: 'Not enough stock' });
+
       } else {
-        return res
-          .status(400)
-          .json({ message: 'Invalid transaction type' });
+        return res.status(400).json({ message: 'Invalid transaction type' });
       }
 
       const now = new Date();
@@ -84,7 +83,77 @@ const transactionController = {
     }
   },
 
-  // DELETE transaction (NEW)
+
+  // UPDATE transaction (NEW)
+  async updateTransaction(req, res) {
+    //#swagger.tags=['transactions']
+    try {
+      const { id } = req.params;
+      const data = req.body;
+
+      // Check if transaction exists
+      const existing = await Transaction.findById(id);
+      if (!existing)
+        return res.status(404).json({ message: "Transaction not found" });
+
+      // Check if product exists
+      const productItem = await Product.findById(data.productId);
+      if (!productItem)
+        return res.status(404).json({ message: "Product not found" });
+
+      // STEP 1 — Undo the OLD transaction effect
+      let restoredStock;
+      if (existing.transactionType === "INBOUND") {
+        restoredStock = productItem.quantity - existing.quantity;
+      } else {
+        restoredStock = productItem.quantity + existing.quantity;
+      }
+
+      if (restoredStock < 0)
+        return res.status(400).json({ message: "Stock cannot go negative after reversal." });
+
+      // STEP 2 — Apply the UPDATED transaction effect
+      let newStock;
+
+      if (data.transactionType === "INBOUND") {
+        newStock = restoredStock + data.quantity;
+
+      } else if (data.transactionType === "OUTBOUND") {
+        newStock = restoredStock - data.quantity;
+
+        if (newStock < 0)
+          return res.status(400).json({ message: "Not enough stock for outbound update." });
+
+      } else {
+        return res.status(400).json({ message: "Invalid transaction type" });
+      }
+
+      const now = new Date();
+
+      // Update product stock
+      await Product.update(data.productId, {
+        quantity: newStock,
+        updatedAt: now
+      });
+
+      // Update transaction record
+      await Transaction.update(id, {
+        ...data,
+        previousStock: restoredStock,
+        newStock,
+        updatedAt: now
+      });
+
+      const updatedItem = await Transaction.findById(id);
+      res.status(200).json(updatedItem);
+
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
+
+
+  // DELETE transaction
   async deleteTransaction(req, res) {
     //#swagger.tags=['transactions']
     try {
@@ -104,6 +173,7 @@ const transactionController = {
       let newStock;
       if (existing.transactionType === "INBOUND") {
         newStock = productItem.quantity - existing.quantity;
+
         if (newStock < 0)
           return res.status(400).json({ message: "Stock cannot go negative." });
 
@@ -113,13 +183,13 @@ const transactionController = {
 
       const now = new Date();
 
-      // Update the product stock
+      // Update product stock
       await Product.update(existing.productId, {
         quantity: newStock,
         updatedAt: now
       });
 
-      // Delete the transaction
+      // Delete transaction
       const deletedCount = await Transaction.delete(id);
       if (deletedCount === 0)
         return res.status(404).json({ message: "Failed to delete transaction" });

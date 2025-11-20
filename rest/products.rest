@@ -11,12 +11,12 @@ POST  http://localhost:3000/products
 Cpntent-Content-Type: application/json
 
 ### Update product
-PUT  http://localhost:3000/products/---
+PUT  http://localhost:3000/products/6917026c5fe878a912578db
 Content-Type: application/json
 
 
 ### Delete product
-DELETE http://localhost:3000/products/----
+DELETE http://localhost:3000/products/6917026c5fe878a912578bdb
 
 ### Swagger Documentation
 GET http://localhost:3000/api-docs

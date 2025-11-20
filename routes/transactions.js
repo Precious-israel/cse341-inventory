@@ -12,4 +12,11 @@ router.get('/:id', validateObjectId('id'), transactionController.getTransactionB
 // CREATE a new transaction
 router.post('/', validateTransaction, transactionController.createTransaction);
 
+// UPDATE an existing transaction (with both validations)
+router.put('/:id', validateObjectId('id'), validateTransaction, transactionController.updateTransaction);
+
+// DELETE a transaction (with ObjectId validation)
+router.delete('/:id', validateObjectId('id'), transactionController.deleteTransaction);
+
+
 module.exports = router;
