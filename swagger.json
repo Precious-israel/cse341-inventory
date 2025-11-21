@@ -8,7 +8,6 @@
   "host": "cse341-inventory.onrender.com",
   "basePath": "/",
   "schemes": [
-    "",
     "https"
   ],
   "paths": {
