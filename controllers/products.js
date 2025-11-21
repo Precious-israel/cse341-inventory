@@ -1,6 +1,6 @@
 const Product = require('../models/product');
 const Transaction = require('../models/transaction');
-const { ObjectId } = require('mongodb');
+const { ObjectId, Code } = require('mongodb');
 
 const productController = {
 
@@ -29,52 +29,70 @@ const productController = {
     }
   },
 
-  // CREATE new product
-  async createProduct(req, res) {
-    //#swagger.tags=['products']
-    try {
-      const productData = req.body;
-      const now = new Date();
+ // CREATE new product
+async createProduct(req, res) {
+  //#swagger.tags = ['products']
+  try {
 
-      productData.createdAt = now;
-      productData.updatedAt = now;
+    const productData = {
+      name: req.body.name,
+      productcode: req.body.productCode,
+      category: req.body.category,
+      price: req.body.price,
+      cost: req.body.cost,
+      quantity: req.body.quantity,
+      supplier: req.body.supplier,
+      reorderlevel: req.body.reorderlevel,
+      description: req.body.description
+    };
 
-      const id = await Product.create(productData);
-      const newProduct = await Product.findById(id);
+    const now = new Date();
+    productData.createdAt = now;
+    productData.updateAt = now;
 
-      res.status(201).json(newProduct);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  },
+    const id = await Product.create(productData);
+    const newProduct = await Product.findById(id);
+
+    res.status(201).json(newProduct);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+},
 
   // UPDATE product
-  async updateProduct(req, res) {
-    //#swagger.tags=['products']
-    try {
-      const { id } = req.params;
-      const updateData = { ...req.body, updatedAt: new Date() };
+async updateProduct(req, res) {
+  //#swagger.tags=['products']
+  try {
+    const { id } = req.params; // Changed from req.body.id to req.params
+    const updateData = {
+      name: req.body.name,
+      productcode: req.body.productCode,
+      category: req.body.category,
+      price: req.body.price,
+      cost: req.body.cost,
+      quantity: req.body.quantity,
+      supplier: req.body.supplier,
+      reorderlevel: req.body.reorderlevel,
+      description: req.body.description,
+      updatedAt: new Date()
+    };
 
-      const updatedCount = await Product.update(id, updateData);
+    const updatedCount = await Product.update(id, updateData);
 
-      if (updatedCount === 0)
-        return res.status(404).json({ message: 'Product not found' });
+    if (updatedCount === 0)
+      return res.status(404).json({ message: 'Product not found' });
 
-      const updatedProduct = await Product.findById(id);
-      res.status(200).json(updatedProduct);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  },
-
+    const updatedProduct = await Product.findById(id);
+    res.status(200).json(updatedProduct);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+},
   // DELETE product
   async deleteProduct(req, res) {
     //#swagger.tags=['products']
     try {
       const { id } = req.params;
-
-      // Optional: delete related transactions
-      await Transaction.deleteMany({ productId: new ObjectId(id) });
 
       const deletedCount = await Product.delete(id);
 

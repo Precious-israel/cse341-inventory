@@ -7,11 +7,11 @@ GET http://localhost:3000/transactions/69170dc95fe878a912578bdf
 
 
 ### Create new transaction
-POST  http://localhost:3000/transactions
+POST  http://localhost:3000/transactions/
 Cpntent-Content-Type: application/json
 
 ### Update transaction
-PUT  http://localhost:3000/transactions/69170dc95fe878a912578bdf
+PUT  http://localhost:3000/transactions/
 Content-Type: application/json
 
 

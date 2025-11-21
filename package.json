@@ -9,7 +9,11 @@
     "swagger": "node swagger.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["inventory", "api", "mongodb"],
+  "keywords": [
+    "inventory",
+    "api",
+    "mongodb"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

@@ -52,10 +52,31 @@
             "schema": {
               "type": "object",
               "properties": {
-                "createdAt": {
+                "name": {
                   "example": "any"
                 },
-                "updatedAt": {
+                "productCode": {
+                  "example": "any"
+                },
+                "category": {
+                  "example": "any"
+                },
+                "price": {
+                  "example": "any"
+                },
+                "cost": {
+                  "example": "any"
+                },
+                "quantity": {
+                  "example": "any"
+                },
+                "supplier": {
+                  "example": "any"
+                },
+                "reorderlevel": {
+                  "example": "any"
+                },
+                "description": {
                   "example": "any"
                 }
               }
@@ -115,6 +136,42 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "productCode": {
+                  "example": "any"
+                },
+                "category": {
+                  "example": "any"
+                },
+                "price": {
+                  "example": "any"
+                },
+                "cost": {
+                  "example": "any"
+                },
+                "quantity": {
+                  "example": "any"
+                },
+                "supplier": {
+                  "example": "any"
+                },
+                "reorderlevel": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
