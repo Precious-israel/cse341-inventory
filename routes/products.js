@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/products');
 const { validateProduct, validateObjectId } = require('../middleware/validate');
+const isAuthenticated = require('../middleware/authenticate');
+
+
 
 // GET all products
 router.get('/', productController.getAllProducts);
@@ -10,12 +13,12 @@ router.get('/', productController.getAllProducts);
 router.get('/:id', validateObjectId('id'), productController.getProductById);
 
 // CREATE a new product
-router.post('/', validateProduct, productController.createProduct);
+router.post('/', isAuthenticated, validateProduct, productController.createProduct);
 
 // UPDATE an existing product (with both validations)
-router.put('/:id', validateObjectId('id'), validateProduct, productController.updateProduct);
+router.put('/:id',isAuthenticated, validateObjectId('id'), validateProduct, productController.updateProduct);
 
 // DELETE a product (with ObjectId validation)
-router.delete('/:id', validateObjectId('id'), productController.deleteProduct);
+router.delete('/:id',isAuthenticated, validateObjectId('id'), productController.deleteProduct);
 
 module.exports = router;
