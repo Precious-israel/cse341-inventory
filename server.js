@@ -73,7 +73,7 @@ app.get(
 // Check login status
 app.get("/", (req, res) => {
   if (req.session.user) {
-    res.send(`Logged in as ${req.session.user.displayName}`);
+    res.send(`Logged in as ${req.session.user.username}`);
   } else {
     res.send("Logged out");
   }
